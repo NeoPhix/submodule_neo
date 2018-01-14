@@ -7,7 +7,7 @@ static constexpr size_t trianglePointsCount = 3;
 
 std::list<Triangle> TrinagulatorDelaunayGreedy::triangulatePointCloud(std::vector<Point3D> points)
 {
-    if (points.size() < trianglePointCount)
+    if (points.size() < trianglePointsCount)
     {
         std::cout << "The count of points is not enough for triangulation" << std::endl;
         return std::list<Triangle>();
