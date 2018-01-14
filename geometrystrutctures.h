@@ -6,6 +6,10 @@ struct Point3D
     int x;
     int y;
     int z;
+
+    const Point3D operator+ (const Point3D &p) const { return Point3D {x + p.x, y + p.y, z + p.z} ; }
+    const Point3D operator- (const Point3D &p) const { return Point3D {x - p.x, y - p.y, z - p.z} ; }
+    const int operator^ (const Point3D &p) const     { return x * p.y - y * p.x; }                      ///vector product of 2d part
 };
 
 struct Line
