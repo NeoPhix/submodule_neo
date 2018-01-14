@@ -4,7 +4,10 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    geometrystrutctures.cpp
+    geometrystrutctures.cpp \
+    trinagulatordelaunaygreedy.cpp
 
 HEADERS += \
-    geometrystrutctures.h
+    geometrystrutctures.h \
+    triangulatorinterface.h \
+    trinagulatordelaunaygreedy.h
