@@ -9,7 +9,7 @@ public:
     TrinagulatorDelaunayGreedy() = default;
     ~TrinagulatorDelaunayGreedy() = default;
 
-    virtual std::list<Triangle> triangulatePointCloud(std::list<Point3D> points) override;
+    virtual std::list<Triangle> triangulatePointCloud(std::vector<Point3D> points) override;
 
 private:
 

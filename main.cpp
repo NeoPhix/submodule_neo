@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <list>
 
 #include "geometrystrutctures.h"
@@ -11,14 +12,14 @@ int main(int argc, char *argv[])
 {
     TrinagulatorDelaunayGreedy triangulator;
 
-    std::list<Point3D> points = {
-                                    Point3D {0, 1, 2},
-                                    Point3D {1, 2, 4},
-                                    Point3D {5, 3, 4},
-                                    Point3D {7, 6, 9},
-                                    Point3D {2, 2, 4},
-                                    Point3D {1, 1, 1}
-                                };
+    std::vector<Point3D> points = {
+                                      Point3D {0, 1, 2},
+                                      Point3D {1, 2, 4},
+                                      Point3D {5, 3, 4},
+                                      Point3D {7, 6, 9},
+                                      Point3D {2, 2, 4},
+                                      Point3D {1, 1, 1}
+                                  };
 
     auto result = triangulator.triangulatePointCloud(points);
 
