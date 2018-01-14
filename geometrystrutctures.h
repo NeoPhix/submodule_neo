@@ -1,13 +1,11 @@
 #ifndef GEOMETRYSTRUTCTURES_H
 #define GEOMETRYSTRUTCTURES_H
 
-using uint = unsigned int;
-
 struct Point3D
 {
-    uint x;
-    uint y;
-    uint z;
+    int x;
+    int y;
+    int z;
 };
 
 struct Line
