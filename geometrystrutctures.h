@@ -1,6 +1,13 @@
 #ifndef GEOMETRYSTRUTCTURES_H
 #define GEOMETRYSTRUTCTURES_H
 
+#include <array>
+
+static constexpr size_t trianglePointsCount = 3;
+
+/**
+ * @brief The Point3D struct
+ */
 struct Point3D
 {
     int x;
@@ -12,20 +19,19 @@ struct Point3D
     const int operator^ (const Point3D &p) const     { return x * p.y - y * p.x; }                      ///vector product of 2d part
 };
 
-struct Line
-{
-    Point3D begin;
-    Point3D end;
-};
 
 /**
  * @brief The Triangle struct of ABC triangle. Contain 3 points.
  */
 struct Triangle
 {
-    Point3D A;
-    Point3D B;
-    Point3D C;
+    Triangle();
+    Triangle(const Point3D &A, const Point3D &B, const Point3D &C);
+
+    ~Triangle();
+
+    std::array<const Point3D*, trianglePointsCount> points;       /// Array of trinagle points pointers. Clockwise order
+    std::array<Triangle*, trianglePointsCount> triangles;   /// Array of triangles pointers. Clockwise order
 };
 
 #endif // GEOMETRYSTRUTCTURES_H

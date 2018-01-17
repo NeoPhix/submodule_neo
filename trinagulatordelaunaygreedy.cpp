@@ -3,8 +3,6 @@
 
 #include <iostream>
 
-static constexpr size_t trianglePointsCount = 3;
-
 std::list<Triangle> TrinagulatorDelaunayGreedy::triangulatePointCloud(std::vector<Point3D> points)
 {
     if (points.size() < trianglePointsCount)
@@ -15,7 +13,7 @@ std::list<Triangle> TrinagulatorDelaunayGreedy::triangulatePointCloud(std::vecto
 
     std::list<Triangle> result;
 
-    result.push_back( Triangle{ points[0], points[1], points[2] } );    //the first triangle is built from three first points
+    result.push_back( Triangle(points[0], points[1], points[2]) );    //the first triangle is built from three first points
 
     for (size_t i = trianglePointsCount; i < points.size(); ++i)
     {
@@ -32,9 +30,13 @@ void TrinagulatorDelaunayGreedy::addPointToTriangulation(std::list<Triangle> &tr
 
 TrinagulatorDelaunayGreedy::Position TrinagulatorDelaunayGreedy::insideTriangle(const Point3D &p, const Triangle &t)
 {
-    int ABProduct = (t.A - p) ^ (t.B - p);
-    int BCProduct = (t.B - p) ^ (t.C - p);
-    int CAProduct = (t.C - p) ^ (t.A - p);
+    const Point3D &A = *t.points[0];
+    const Point3D &B = *t.points[1];
+    const Point3D &C = *t.points[2];
+
+    int ABProduct = (A - p) ^ (B - p);
+    int BCProduct = (B - p) ^ (C - p);
+    int CAProduct = (C - p) ^ (A - p);
 
     bool allNegative = (ABProduct < 0) && (BCProduct < 0) && (CAProduct < 0);
     bool allPositive = (ABProduct > 0) && (BCProduct > 0) && (CAProduct > 0);
