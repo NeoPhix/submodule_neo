@@ -7,8 +7,6 @@
 #include <list>
 
 #include "geometrystrutctures.h"
-#include "triangulatorinterface.h"
-#include "trinagulatordelaunaygreedy.h"
 #include "trianglegraph.h"
 
 using namespace std;
