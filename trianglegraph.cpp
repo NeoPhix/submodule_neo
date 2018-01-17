@@ -30,3 +30,33 @@ TriangleGraph::~TriangleGraph()
         }
     }
 }
+
+std::list<Triangle> TriangleGraph::getTriangles()
+{
+    std::list<Triangle> result;
+
+    addTriangleToList(result, !passed);
+
+    return result;
+}
+
+void TriangleGraph::addTriangleToList(std::list<Triangle> &list, bool passingFlag)
+{
+    if (passed != passingFlag)
+    {
+        passed = passingFlag;
+
+        const Point3D &A = *points[0];
+        const Point3D &B = *points[1];
+        const Point3D &C = *points[2];
+
+        list.push_back( Triangle {A, B, C} );
+
+        for (auto iter = triangles.begin(); iter != triangles.end(); ++iter)
+        {
+            if (*iter != nullptr)
+                (*iter)->addTriangleToList(list, passingFlag);
+        }
+    }
+}
+

@@ -1,6 +1,8 @@
 #ifndef TRIANGLEGRAPH_H
 #define TRIANGLEGRAPH_H
 
+#include <list>
+
 #include "geometrystrutctures.h"
 
 /**
@@ -15,6 +17,11 @@ public:
     TriangleGraph(const Point3D &A, const Point3D &B, const Point3D &C);
 
     ~TriangleGraph();
+
+    std::list<Triangle> getTriangles();
+
+private:
+    void addTriangleToList(std::list<Triangle> &list, bool passingFlag);
 
 private:
     std::array<const Point3D*, trianglePointsCount> points;       /// Array of trinagle points pointers. Clockwise order
