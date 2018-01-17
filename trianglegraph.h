@@ -13,21 +13,23 @@ class TriangleGraph
 public:
     static constexpr size_t trianglePointsCount = 3;
 
+public:
     TriangleGraph();
     TriangleGraph(const Point3D &A, const Point3D &B, const Point3D &C);
-
     ~TriangleGraph();
 
     std::list<Triangle> getTriangles();
+    void addTriangle(const Point3D &point, const size_t edge);
 
 private:
     void addTriangleToList(std::list<Triangle> &list, bool passingFlag);
 
 private:
     std::array<const Point3D*, trianglePointsCount> points;       /// Array of trinagle points pointers. Clockwise order
-    std::array<TriangleGraph*, trianglePointsCount> triangles;         /// Array of triangles pointers. Clockwise order
+    std::array<TriangleGraph*, trianglePointsCount> triangles;    /// Array of triangles pointers. Clockwise order
 
     bool passed;
+    bool destructible;
 };
 
 #endif // TRIANGLEGRAPH_H

@@ -28,38 +28,32 @@ int main(int argc, char *argv[])
     TrinagulatorDelaunayGreedy triangulator;
 
     std::vector<Point3D> points = {
-                                      Point3D {0,  10, 20},
-                                      Point3D {10, 20, 40},
-                                      Point3D {50, 30, 40},
-                                      Point3D {70, 60, 90},
-                                      Point3D {20, 20, 40},
-                                      Point3D {10, 10, 10}
+                                      Point3D {   0,   50, 5 },
+                                      Point3D {  50,  -20, 40},
+                                      Point3D { -50,  -20, 40},
+                                      Point3D { 100,  100, 90},
+                                      Point3D {-0,   -100, 40},
+                                      Point3D {-100, 100, 10}
                                   };
 
-    auto result = triangulator.triangulatePointCloud(points);
+    //auto graph = triangulator.triangulatePointCloud(points);
 
+    TriangleGraph graph(points[0], points[1], points[2]);
+
+    graph.addTriangle(points[3], 0);
+    graph.addTriangle(points[4], 1);
+    graph.addTriangle(points[5], 2);
+
+    auto result = graph.getTriangles();
     std::cout << "Complete triangles:" << std::endl;
 
-//    for (;;)
-//    {
-//        std::cout << "A: {" << result->points[0]->x << ", " << result->points[0]->y << ", " << result->points[0]->z << "}, "
-//                  << "B: {" << result->points[1]->x << ", " << result->points[1]->y << ", " << result->points[1]->z << "}, "
-//                  << "C: {" << result->points[2]->x << ", " << result->points[2]->y << ", " << result->points[2]->z << "} "
-//                  << std::endl;
-
-//        for (auto iter = result.begin(); iter != result.end(); ++iter)
-//        {
-
-//        }
-//    }
-
-//    for (auto iter = result.begin(); iter != result.end(); ++iter)
-//    {
-//        std::cout << "A: {" << iter->points[0]->x << ", " << iter->points[0]->y << ", " << iter->points[0]->z << "}, "
-//                  << "B: {" << iter->points[1]->x << ", " << iter->points[1]->y << ", " << iter->points[1]->z << "}, "
-//                  << "C: {" << iter->points[2]->x << ", " << iter->points[2]->y << ", " << iter->points[2]->z << "} "
-//                  << std::endl;
-//    }
+    for (auto iter = result.begin(); iter != result.end(); ++iter)
+    {
+        std::cout << "A: {" << iter->A.x << ", " << iter->A.y << ", " << iter->A.z << "}, "
+                  << "B: {" << iter->B.x << ", " << iter->B.y << ", " << iter->B.z << "}, "
+                  << "C: {" << iter->C.x << ", " << iter->C.y << ", " << iter->C.z << "} "
+                  << std::endl;
+    }
 
     std::cout << "Hello, world! ;)" << std::endl;
 
@@ -70,18 +64,22 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     QGraphicsScene scene;
-    scene.setSceneRect(0, 0, 400, 400);
+    size_t width = 500;
+    size_t height = 500;
+    scene.setSceneRect(0, 0, width, height);
 
-//    for (auto iter = result.begin(); iter != result.end(); ++iter)
-//    {
-//        const Point3D &A = *iter->points[0];
-//        const Point3D &B = *iter->points[1];
-//        const Point3D &C = *iter->points[2];
+    Point3D center { width / 2, height / 2, 0 };
 
-//        scene.addLine(A.x, A.y, B.x, B.y);
-//        scene.addLine(B.x, B.y, C.x, C.y);
-//        scene.addLine(C.x, C.y, A.x, A.y);
-//    }
+    for (auto iter = result.begin(); iter != result.end(); ++iter)
+    {
+        const Point3D A = iter->A + center;
+        const Point3D B = iter->B + center;
+        const Point3D C = iter->C + center;
+
+        scene.addLine(A.x, A.y, B.x, B.y);
+        scene.addLine(B.x, B.y, C.x, C.y);
+        scene.addLine(C.x, C.y, A.x, A.y);
+    }
 
     QGraphicsView view(&scene);
     view.show();
