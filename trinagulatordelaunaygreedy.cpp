@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-std::list<Triangle> TrinagulatorDelaunayGreedy::triangulatePointCloud(std::vector<Point3D> points)
+std::list<Triangle> TrinagulatorDelaunayGreedy::triangulatePointCloud(const std::vector<Point3D> &points)
 {
     if (points.size() < trianglePointsCount)
     {
@@ -38,18 +38,18 @@ TrinagulatorDelaunayGreedy::Position TrinagulatorDelaunayGreedy::insideTriangle(
     int BCProduct = (B - p) ^ (C - p);
     int CAProduct = (C - p) ^ (A - p);
 
-    bool allNegative = (ABProduct < 0) && (BCProduct < 0) && (CAProduct < 0);
-    bool allPositive = (ABProduct > 0) && (BCProduct > 0) && (CAProduct > 0);
-
-    if (allNegative || allPositive)
-        return Position::Inside;
-
     if (ABProduct == 0)
         return Position::OnEdgeAB;
     else if (BCProduct == 0)
         return Position::OnEdgeBC;
     else if (CAProduct == 0)
         return Position::OnEdgeCA;
+
+    bool allNegative = (ABProduct < 0) && (BCProduct < 0) && (CAProduct < 0);
+    bool allPositive = (ABProduct > 0) && (BCProduct > 0) && (CAProduct > 0);
+
+    if (allNegative || allPositive)
+        return Position::Inside;
 
     return Position::Outside;
 }

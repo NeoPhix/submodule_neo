@@ -26,9 +26,9 @@ int main(int argc, char *argv[])
     std::cout << "Complete triangles:" << std::endl;
     for (auto iter = result.begin(); iter != result.end(); ++iter)
     {
-        std::cout << "A: {" << iter->A.x << ", " << iter->A.y << ", " << iter->A.z << "}, "
-                  << "B: {" << iter->B.x << ", " << iter->B.y << ", " << iter->B.z << "}, "
-                  << "C: {" << iter->C.x << ", " << iter->C.y << ", " << iter->C.z << "} "
+        std::cout << "A: {" << iter->points[0]->x << ", " << iter->points[0]->y << ", " << iter->points[0]->z << "}, "
+                  << "B: {" << iter->points[1]->x << ", " << iter->points[1]->y << ", " << iter->points[1]->z << "}, "
+                  << "C: {" << iter->points[2]->x << ", " << iter->points[2]->y << ", " << iter->points[2]->z << "} "
                   << std::endl;
     }
 
