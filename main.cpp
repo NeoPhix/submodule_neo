@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
                                       Point3D { -50,  -20, 40},
                                       Point3D { 100,  100, 90},
                                       Point3D {-0,   -100, 40},
-                                      Point3D {-100, 100, 10}
+                                      Point3D {-100,  100, 10}
                                   };
 
     TriangleGraph graph(points[0], points[1], points[2]);

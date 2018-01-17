@@ -37,14 +37,9 @@ private:
     };
 
 private:
-    void addPointToTriangulation(TriangleGraph &graph, const Point3D &point);
+    Position insideCurrentTriangle(const Point3D &p);
+    Position insideTriangle(const Point3D &p, const Point3D &A, const Point3D &B, const Point3D &C);
 
-    Position insideTriangle(const Point3D &p,
-                            const Point3D &A,
-                            const Point3D &B,
-                            const Point3D &C);
-
-private:
     void addTriangleToList(std::list<Triangle> &list, bool passingFlag);
 
 private:
