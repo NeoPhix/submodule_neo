@@ -1,3 +1,7 @@
+#include <QApplication>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+
 #include <iostream>
 #include <vector>
 #include <list>
@@ -34,5 +38,13 @@ int main(int argc, char *argv[])
 
     std::cout << "Hello, world! ;)" << std::endl;
 
-    return 0;
+    QApplication a(argc, argv);
+
+    QGraphicsScene scene;
+    scene.setSceneRect(0, 0, 400, 400);
+
+    QGraphicsView view(&scene);
+    view.show();
+
+    return a.exec();
 }
