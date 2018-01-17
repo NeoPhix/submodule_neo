@@ -18,8 +18,31 @@ public:
     TriangleGraph(const Point3D &A, const Point3D &B, const Point3D &C);
     ~TriangleGraph();
 
-    std::list<Triangle> getTriangles();
-    void addTriangle(const Point3D &point, const size_t edge);
+    TriangleGraph* getTriangleGraph(const size_t edge);
+    void addTriangleToGraph(const Point3D &point, const size_t edge);
+
+    Triangle getCurrentTriangle();
+    void getPoints(Point3D &A, Point3D &B, Point3D &C);
+
+    std::list<Triangle> getTrianglesList();
+
+private:
+    enum class Position
+    {
+        Inside,
+        OnEdgeAB,
+        OnEdgeBC,
+        OnEdgeCA,
+        Outside
+    };
+
+private:
+    void addPointToTriangulation(TriangleGraph &graph, const Point3D &point);
+
+    Position insideTriangle(const Point3D &p,
+                            const Point3D &A,
+                            const Point3D &B,
+                            const Point3D &C);
 
 private:
     void addTriangleToList(std::list<Triangle> &list, bool passingFlag);

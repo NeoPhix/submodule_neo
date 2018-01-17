@@ -37,7 +37,7 @@ TriangleGraph::~TriangleGraph()
     }
 }
 
-std::list<Triangle> TriangleGraph::getTriangles()
+std::list<Triangle> TriangleGraph::getTrianglesList()
 {
     std::list<Triangle> result;
 
@@ -46,7 +46,7 @@ std::list<Triangle> TriangleGraph::getTriangles()
     return result;
 }
 
-void TriangleGraph::addTriangle(const Point3D &point, const size_t edge)
+void TriangleGraph::addTriangleToGraph(const Point3D &point, const size_t edge)
 {
     assert(edge < trianglePointsCount); //We have only 3 triangle edges
 
@@ -82,6 +82,21 @@ void TriangleGraph::addTriangle(const Point3D &point, const size_t edge)
     triangles[edge] = triangle;
 }
 
+
+Triangle TriangleGraph::getCurrentTriangle()
+{
+    return Triangle {*points[0], *points[1], *points[2]} ;
+}
+
+
+void TriangleGraph::getPoints(Point3D &A, Point3D &B, Point3D &C)
+{
+    A = *points[0];
+    B = *points[1];
+    C = *points[2];
+}
+
+
 void TriangleGraph::addTriangleToList(std::list<Triangle> &list, bool passingFlag)
 {
     if (passed != passingFlag)
@@ -102,3 +117,34 @@ void TriangleGraph::addTriangleToList(std::list<Triangle> &list, bool passingFla
     }
 }
 
+//void TriangleGraph::addPointToTriangulation(TriangleGraph &graph, const Point3D &point)
+//{
+//    Point3D A, B, C;
+//    graph.addTriangleToGraph(point, 0);
+
+//}
+
+TriangleGraph::Position TriangleGraph::insideTriangle(const Point3D &p,
+                                                                   const Point3D &A,
+                                                                   const Point3D &B,
+                                                                   const Point3D &C)
+{
+    int ABProduct = (A - p) ^ (B - p); //vector product
+    int BCProduct = (B - p) ^ (C - p);
+    int CAProduct = (C - p) ^ (A - p);
+
+    if (ABProduct == 0)
+        return Position::OnEdgeAB;
+    else if (BCProduct == 0)
+        return Position::OnEdgeBC;
+    else if (CAProduct == 0)
+        return Position::OnEdgeCA;
+
+    bool allNegative = (ABProduct < 0) && (BCProduct < 0) && (CAProduct < 0);
+    bool allPositive = (ABProduct > 0) && (BCProduct > 0) && (CAProduct > 0);
+
+    if (allNegative || allPositive)
+        return Position::Inside;
+
+    return Position::Outside;
+}

@@ -25,8 +25,6 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    TrinagulatorDelaunayGreedy triangulator;
-
     std::vector<Point3D> points = {
                                       Point3D {   0,   50, 5 },
                                       Point3D {  50,  -20, 40},
@@ -36,15 +34,13 @@ int main(int argc, char *argv[])
                                       Point3D {-100, 100, 10}
                                   };
 
-    //auto graph = triangulator.triangulatePointCloud(points);
-
     TriangleGraph graph(points[0], points[1], points[2]);
 
-    graph.addTriangle(points[3], 0);
-    graph.addTriangle(points[4], 1);
-    graph.addTriangle(points[5], 2);
+    graph.addTriangleToGraph(points[3], 0);
+    graph.addTriangleToGraph(points[4], 1);
+    graph.addTriangleToGraph(points[5], 2);
 
-    auto result = graph.getTriangles();
+    auto result = graph.getTrianglesList();
     std::cout << "Complete triangles:" << std::endl;
 
     for (auto iter = result.begin(); iter != result.end(); ++iter)
