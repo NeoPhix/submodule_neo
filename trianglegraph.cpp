@@ -41,7 +41,7 @@ std::list<Triangle> TriangleGraph::getTrianglesList()
 {
     std::list<Triangle> result;
 
-    addTriangleToList(result, !this->passed);
+    addTriangleToList(result, !passed);
 
     return result;
 }
@@ -53,10 +53,11 @@ void TriangleGraph::addTriangleToGraph(const Point3D &point, const size_t edge)
     if (triangles[edge] != nullptr)
     {
         std::cout << "this edge is not empty" << std::endl;
+        return;
     }
 
     auto triangle = new TriangleGraph();
-    triangle->passed = this->passed;
+    triangle->passed = passed;
 
     switch (edge)
     {
@@ -101,7 +102,7 @@ void TriangleGraph::addTriangleToList(std::list<Triangle> &list, bool passingFla
 {
     if (passed != passingFlag)
     {
-        this->passed = passingFlag;
+        passed = passingFlag;
 
         const Point3D &A = *points[0];
         const Point3D &B = *points[1];
