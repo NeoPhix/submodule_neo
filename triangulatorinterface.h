@@ -5,12 +5,12 @@
 #include <vector>
 
 struct Point3D;
-struct Triangle;
+struct TriangleGraph;
 
 class TriangulatorInterface
 {
 public:
-    virtual std::list<Triangle> triangulatePointCloud(const std::vector<Point3D> &points) = 0;
+    virtual TriangleGraph triangulatePointCloud(const std::vector<Point3D> &points) = 0;
 };
 
 #endif // TRIANGULATORINTERFACE_H

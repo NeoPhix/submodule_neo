@@ -7,9 +7,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     geometrystrutctures.cpp \
-    trinagulatordelaunaygreedy.cpp
+    trinagulatordelaunaygreedy.cpp \
+    trianglegraph.cpp
 
 HEADERS += \
     geometrystrutctures.h \
     triangulatorinterface.h \
-    trinagulatordelaunaygreedy.h
+    trinagulatordelaunaygreedy.h \
+    trianglegraph.h

@@ -1,21 +1,20 @@
 #include "trinagulatordelaunaygreedy.h"
 #include "geometrystrutctures.h"
+#include "trianglegraph.h"
 
 #include <iostream>
 
-std::list<Triangle> TrinagulatorDelaunayGreedy::triangulatePointCloud(const std::vector<Point3D> &points)
+TriangleGraph TrinagulatorDelaunayGreedy::triangulatePointCloud(const std::vector<Point3D> &points)
 {
-    if (points.size() < trianglePointsCount)
+    if (points.size() < TriangleGraph::trianglePointsCount)
     {
         std::cout << "The count of points is not enough for triangulation" << std::endl;
-        return std::list<Triangle>();
+        return TriangleGraph();
     }
 
-    std::list<Triangle> result;
+    TriangleGraph result(points[0], points[1], points[2]);    //the first triangle is built from three first points
 
-    result.push_back( Triangle(points[0], points[1], points[2]) );    //the first triangle is built from three first points
-
-    for (size_t i = trianglePointsCount; i < points.size(); ++i)
+    for (size_t i = TriangleGraph::trianglePointsCount; i < points.size(); ++i)
     {
         addPointToTriangulation(result, points[i]);
     }
@@ -23,17 +22,16 @@ std::list<Triangle> TrinagulatorDelaunayGreedy::triangulatePointCloud(const std:
     return result;
 }
 
-void TrinagulatorDelaunayGreedy::addPointToTriangulation(std::list<Triangle> &triangulation, const Point3D &point)
+void TrinagulatorDelaunayGreedy::addPointToTriangulation(TriangleGraph &triangulation, const Point3D &point)
 {
     //TODO realize
 }
 
-TrinagulatorDelaunayGreedy::Position TrinagulatorDelaunayGreedy::insideTriangle(const Point3D &p, const Triangle &t)
+TrinagulatorDelaunayGreedy::Position TrinagulatorDelaunayGreedy::insideTriangle(const Point3D &p,
+                                                                                const Point3D &A,
+                                                                                const Point3D &B,
+                                                                                const Point3D &C)
 {
-    const Point3D &A = *t.points[0];
-    const Point3D &B = *t.points[1];
-    const Point3D &C = *t.points[2];
-
     int ABProduct = (A - p) ^ (B - p);
     int BCProduct = (B - p) ^ (C - p);
     int CAProduct = (C - p) ^ (A - p);
