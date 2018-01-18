@@ -31,10 +31,10 @@ TriangleGraph::~TriangleGraph()
         if (triangles[i] != nullptr && triangles[i]->destructible != true)
         {
             delete triangles[i];
-            std::cout << "deleted" << std::endl;
             triangles[i] = nullptr;
         }
     }
+    std::cout << "deleted" << std::endl;
 }
 
 std::list<Triangle> TriangleGraph::getTrianglesList()
@@ -126,9 +126,9 @@ void TriangleGraph::addTriangleToList(std::list<Triangle> &list, bool passingFla
 //}
 
 TriangleGraph::Position TriangleGraph::insideTriangle(const Point3D &p,
-                                                                   const Point3D &A,
-                                                                   const Point3D &B,
-                                                                   const Point3D &C)
+                                                      const Point3D &A,
+                                                      const Point3D &B,
+                                                      const Point3D &C)
 {
     int ABProduct = (A - p) ^ (B - p); //vector product
     int BCProduct = (B - p) ^ (C - p);

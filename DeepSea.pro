@@ -7,8 +7,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     geometrystrutctures.cpp \
-    trianglegraph.cpp
+    trianglegraph.cpp \
+    triangulationiterative.cpp
 
 HEADERS += \
     geometrystrutctures.h \
-    trianglegraph.h
+    trianglegraph.h \
+    triangulationinterface.h \
+    triangulationiterative.h

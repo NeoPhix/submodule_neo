@@ -2,6 +2,7 @@
 #define GEOMETRYSTRUTCTURES_H
 
 #include <array>
+#include <cmath>
 
 /**
  * @brief The Point3D struct
