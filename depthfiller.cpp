@@ -9,11 +9,16 @@ DepthFiller::DepthFiller(std::vector<uint> vertexArray_, size_t width_, size_t h
     depthArray.resize(vertexArray.size(), 0);
 }
 
-std::vector<uint> DepthFiller::getDepthArray() //todo vector.size == 0
+std::vector<uint> DepthFiller::getDepthArray()
 {
-    fillRegion(6, 3);
+    if (vertexArray.size() != width * height || vertexArray.size() == 0)
+    {
+        std::cout << "Invalid vertex array size! Return empty depth vector" << std::endl;
+
+        return std::vector<uint>();
+    }
+    fillRegion(0, 0);
     return depthArray;
-    return vertexArray;
 }
 
 void DepthFiller::fillRegion(int x, int y)
@@ -64,8 +69,6 @@ void DepthFiller::fillRegion(int x, int y)
         if (!down.empty())
             fillRegion(xn, yn);
     }
-
-//    debugOutput();
 }
 
 std::list<coords> DepthFiller::getEqualRegion(int x, int y)
@@ -244,28 +247,4 @@ bool DepthFiller::connectedWithBorder(std::list<coords> region)
             return true;
     }
     return false;
-}
-
-void DepthFiller::debugOutput()
-{
-    for (size_t y = 0; y < height; ++y)
-    {
-        for (size_t x = 0; x < width; ++x)
-        {
-            std::cout << vertexArray[y * width + x] << ", ";
-        }
-        std::cout << std::endl;
-    }
-
-    std::cout << std::endl;
-
-    for (size_t y = 0; y < height; ++y)
-    {
-        for (size_t x = 0; x < width; ++x)
-        {
-            std::cout << depthArray[y * width + x] << ", ";
-        }
-        std::cout << std::endl;
-    }
-    std::cout << "---------------" << std::endl;
 }

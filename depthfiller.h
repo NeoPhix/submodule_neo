@@ -36,8 +36,6 @@ private:
     bool onEdgeOfSurface(int x, int y);
     bool connectedWithBorder(std::list<coords> region);
 
-    void debugOutput();
-
 private:
     std::vector<uint> vertexArray;
     size_t width;

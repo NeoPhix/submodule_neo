@@ -3,7 +3,6 @@
 #include <vector>
 #include <list>
 #include <assert.h>
-#include <ctime>
 #include <fstream>
 
 #include "depthfiller.h"
@@ -43,6 +42,8 @@ int main(int argc, char *argv[])
 
     file.close();
 
+    std::cout << "Input vertices:" << std::endl;
+
     for (size_t y = 0; y < height; ++y)
     {
         for (size_t x = 0; x < width; ++x)
@@ -52,10 +53,10 @@ int main(int argc, char *argv[])
         std::cout << std::endl;
     }
 
-    std::cout << "-----------------------" << std::endl;
-
     DepthFiller filler(vertexArray, width, height);
     std::vector<uint> deep = filler.getDepthArray();
+
+    std::cout << "Output depth:" << std::endl;
 
     for (size_t y = 0; y < height; ++y)
     {
@@ -65,6 +66,8 @@ int main(int argc, char *argv[])
         }
         std::cout << std::endl;
     }
+
+    test();
 
     return 0;
 }
