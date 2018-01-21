@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
         std::cout << std::endl;
     }
 
-    test();
+   // test();
 
     return 0;
 }

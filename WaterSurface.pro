@@ -4,7 +4,9 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    depthfiller.cpp
+    depthfiller.cpp \
+    test.cpp
 
 HEADERS += \
-    depthfiller.h
+    depthfiller.h \
+    test.h
