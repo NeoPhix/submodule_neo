@@ -3,39 +3,45 @@
 #include <vector>
 #include <list>
 #include <assert.h>
+#include <ctime>
+#include <fstream>
 
 #include "depthfiller.h"
+#include "test.h"
 
-//bool isSink(size_t x, size_t y, std::vector<uint> vertexArray, size_t width, size_t height); //ask Anya about variables order in func signature
+int main(int argc, char *argv[])
+{
+    if (argc != 2)
+    {
+        std::cout << "need input data file" << std::endl;
+        return 1;
+    }
 
-int main()
-{    
-    size_t width = 10;
-    size_t height = 10;
+    std::ifstream file(argv[1], std::ios_base::in);
 
-    std::vector<uint> vertexArray = {0, 0, 0, 0, 0, 0, 1, 0, 5, 1,
-                                     0, 5, 5, 5, 5, 0, 1, 0, 5, 1,
-                                     0, 5, 2, 3, 5, 0, 1, 0, 5, 1,
-                                     0, 5, 2, 3, 5, 5, 5, 5, 5, 1,
-                                     0, 5, 2, 3, 5, 4, 2, 6, 5, 1,
-                                     0, 4, 2, 3, 5, 4, 2, 6, 5, 1,
-                                     0, 5, 2, 3, 5, 4, 2, 6, 5, 1,
-                                     0, 5, 2, 3, 5, 4, 2, 6, 5, 1,
-                                     0, 5, 2, 3, 5, 4, 2, 6, 5, 1,
-                                     0, 5, 5, 5, 5, 5, 5, 5, 5, 1};
+    size_t width = 0;
+    size_t height = 0;
+    std::vector<uint> vertexArray;
 
-//    std::vector<uint> vertexArray = {1, 1, 1,
-//                                     1, 0, 1,
-//                                     1, 1, 1};
+    if ( file.is_open() )
+    {
+        file >> width;
+        file >> height;
 
-//    size_t width = 10;
-//    size_t height = 5;
-//    std::vector<uint> vertexArray = {1, 1, 1, 1, 9, 1, 1, 1, 1, 9,
-//                                     1, 5, 5, 5, 1, 1, 5, 5, 5, 1,
-//                                     1, 5, 0, 5, 1, 1, 5, 0, 5, 1,
-//                                     1, 5, 5, 5, 1, 1, 5, 5, 5, 1,
-//                                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+        vertexArray.resize(width * height);
 
+        for (size_t i = 0; i < vertexArray.size(); ++i)
+        {
+            file >> vertexArray[i];
+        }
+    }
+    else
+    {
+        std::cout << "cannot open input data file" << std::endl;
+        return 2;
+    }
+
+    file.close();
 
     for (size_t y = 0; y < height; ++y)
     {
