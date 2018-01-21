@@ -9,6 +9,115 @@ DepthFiller::DepthFiller(std::vector<uint> vertexArray_, size_t width_, size_t h
     depthArray.resize(vertexArray.size(), 0);
 }
 
+std::vector<uint> DepthFiller::getDepthArray() //todo vector.size == 0
+{
+    fillRegion(6, 3);
+    return depthArray;
+    return vertexArray;
+}
+
+void DepthFiller::fillRegion(int x, int y)
+{
+    auto fillingRegion = getEqualRegion(x, y);
+    auto upBorderList = getBorderListUp(fillingRegion);
+    auto downBorderList = getBorderListDown(fillingRegion);
+
+    uint currentHeight = vertexArray[y * width + x];
+
+    if (downBorderList.empty())
+    {
+        bool connected = connectedWithBorder(fillingRegion);
+        auto min = getMinimalHeight(upBorderList);
+
+        for (auto iter = fillingRegion.begin(); iter != fillingRegion.end(); ++iter)
+        {
+            int xn = iter->first;
+            int yn = iter->second;
+
+            if (!connected)
+                depthArray[yn * width + xn] += min - vertexArray[yn * width + xn];
+
+            vertexArray[yn * width + xn] = min;
+        }
+    }
+    else
+    {
+        for (auto iter = downBorderList.begin(); iter != downBorderList.end(); ++iter)
+        {
+            int xn = iter->first;
+            int yn = iter->second;
+
+            uint downHeight = vertexArray[yn * width + xn];
+            if (downHeight < currentHeight)
+                fillRegion(xn, yn);
+        }
+    }
+
+    for (auto iter = upBorderList.begin(); iter != upBorderList.end(); ++iter)
+    {
+        std::vector<bool> passed(width * height, false);
+        int xn = iter->first;
+        int yn = iter->second;
+
+        auto down = getNearestDown(xn, yn, passed);
+
+        if (!down.empty())
+            fillRegion(xn, yn);
+    }
+
+//    debugOutput();
+}
+
+std::list<coords> DepthFiller::getEqualRegion(int x, int y)
+{
+    std::vector<bool> passed(width * height, false);
+    std::list<coords> region;
+    region.push_back(coords(x, y));
+
+    for (auto iter = region.begin(); iter != region.end(); ++iter)
+    {
+        int xn = iter->first;
+        int yn = iter->second;
+
+        auto equals = getNearestEqual(xn, yn, passed);
+        region.splice(region.end(), equals);
+    }
+    return region;
+}
+
+
+std::list<coords> DepthFiller::getBorderListUp(std::list<coords> region)
+{
+    std::vector<bool> passed(width * height, false);
+    std::list<coords> result;
+    for (auto iter = region.begin(); iter != region.end(); ++iter)
+    {
+        int xn = iter->first;
+        int yn = iter->second;
+
+        auto nearestUp = getNearestUp(xn, yn, passed);
+        result.splice(result.end(), nearestUp);
+    }
+    return result;
+}
+
+
+std::list<coords> DepthFiller::getBorderListDown(std::list<coords> region)
+{
+    std::vector<bool> passed(width * height, false);
+    std::list<coords> result;
+    for (auto iter = region.begin(); iter != region.end(); ++iter)
+    {
+        int xn = iter->first;
+        int yn = iter->second;
+
+        auto nearestUp = getNearestDown(xn, yn, passed);
+        result.splice(result.end(), nearestUp);
+    }
+    return result;
+}
+
+
 std::list<coords> DepthFiller::getNearestUp(int x, int y, std::vector<bool> &passed)
 {
     assert( insideEdges(x, y) );
@@ -67,6 +176,20 @@ std::list<coords> DepthFiller::getNearestDown(int x, int y, std::vector<bool> &p
     return result;
 }
 
+uint DepthFiller::getMinimalHeight(std::list<coords> region)
+{
+    uint min = std::numeric_limits<uint>::max();
+    for (auto iter = region.begin(); iter != region.end(); ++iter)
+    {
+        int xn = iter->first;
+        int yn = iter->second;
+
+        if (min > vertexArray[yn * width + xn])
+            min = vertexArray[yn * width + xn];
+    }
+    return min;
+}
+
 std::list<coords> DepthFiller::getNearestEqual(int x, int y, std::vector<bool> &passed)
 {
     assert( insideEdges(x, y) );
@@ -96,13 +219,6 @@ std::list<coords> DepthFiller::getNearestEqual(int x, int y, std::vector<bool> &
     return result;
 }
 
-std::vector<uint> DepthFiller::getDepthArray() //todo vector.size == 0
-{
-    fillRegion(3, 3);
-    //return depthArray;
-    return vertexArray;
-}
-
 bool DepthFiller::insideEdges(int x, int y)
 {
     if (x < 0 || x > width - 1 || y < 0 || y > height - 1)
@@ -117,93 +233,39 @@ bool DepthFiller::onEdgeOfSurface(int x, int y)
     return false;
 }
 
-void DepthFiller::fillRegion(int x, int y)
+bool DepthFiller::connectedWithBorder(std::list<coords> region)
 {
-    std::vector<bool> passed(width * height, false);
-
-    std::list<coords> fill, up, down;
-    bool onEdge = false;
-    fill.push_back( coords(x, y) );
-
-    for (auto iter = fill.begin(); iter != fill.end(); ++iter)
+    for (auto iter = region.begin(); iter != region.end(); ++iter)
     {
         int xn = iter->first;
         int yn = iter->second;
 
-        auto nearestEqual = getNearestEqual(xn, yn, passed);
-        fill.splice(fill.end(), nearestEqual);
-
-        auto nearestUp = getNearestUp(xn, yn, passed);
-        up.splice(up.end(), nearestUp);
-
-        auto nearestDown = getNearestDown(xn, yn, passed);
-        down.splice(down.end(), nearestDown);
+        if ( onEdgeOfSurface(xn, yn) )
+            return true;
     }
+    return false;
+}
 
-    uint min = std::numeric_limits<uint>::max();
-    for (auto iter = up.begin(); iter != up.end(); ++iter)
+void DepthFiller::debugOutput()
+{
+    for (size_t y = 0; y < height; ++y)
     {
-        int xn = iter->first;
-        int yn = iter->second;
-
-        if ( min > vertexArray[yn * width + xn] )
-            min = vertexArray[yn * width + xn];
-
-        if ( !onEdge && onEdgeOfSurface(xn, yn) )
-            onEdge = true;
+        for (size_t x = 0; x < width; ++x)
+        {
+            std::cout << vertexArray[y * width + x] << ", ";
+        }
+        std::cout << std::endl;
     }
 
-    if (min == std::numeric_limits<uint>::max())
-        return;
+    std::cout << std::endl;
 
-    for (auto iter = fill.begin(); iter != fill.end(); ++iter)
+    for (size_t y = 0; y < height; ++y)
     {
-        int xn = iter->first;
-        int yn = iter->second;
-
-        if (!onEdge)
-            depthArray[yn * width + xn] += min - vertexArray[yn * width + xn];
-
-        vertexArray[yn * width + xn] = min;
+        for (size_t x = 0; x < width; ++x)
+        {
+            std::cout << depthArray[y * width + x] << ", ";
+        }
+        std::cout << std::endl;
     }
-
-    if (!down.empty())
-    {
-        auto &c = down.front();
-        int xn = c.first;
-        int yn = c.second;
-        fillRegion(xn, yn);
-    }
-
-    if (!up.empty())
-    {
-        auto &c = up.front();
-        int xn = c.first;
-        int yn = c.second;
-        fillRegion(xn, yn);
-    }
-
-
-//    std::list<coords> fill;
-//    fill.push_back( coords(x, y) );
-
-//    uint max = 0;
-
-//    for (auto iter = fill.begin(); iter != fill.end(); ++iter)
-//    {
-//        int x = iter->first;
-//        int y = iter->second;
-
-//        auto nearest = getNearestUp(x, y);
-//        fill.splice(fill.end(), nearest);
-
-//        if ( max < vertexArray[y * width + x] )
-//            max = vertexArray[y * width + x];
-//    }
-
-//    for (auto iter = fill.begin(); iter != fill.end(); ++iter)
-//    {
-//        depthArray[y * width + x] = max - vertexArray[y * width + x];
-//        vertexArray[y * width + x] = max;
-//    }
+    std::cout << "---------------" << std::endl;
 }

@@ -22,12 +22,21 @@ public:
 private:
     void fillRegion(int x, int y);
 
+    std::list<coords> getEqualRegion(int x, int y);
+    std::list<coords> getBorderListUp(std::list<coords> region);
+    std::list<coords> getBorderListDown(std::list<coords> region);
+
     std::list<coords> getNearestUp   (int x, int y, std::vector<bool> &passed);
     std::list<coords> getNearestEqual(int x, int y, std::vector<bool> &passed);
     std::list<coords> getNearestDown (int x, int y, std::vector<bool> &passed);
 
-    bool insideEdges(int x, int y);  //to think: may be do not check border pixels?
-    bool onEdgeOfSurface(int x, int y);  //to think: may be do not check border pixels?
+    uint getMinimalHeight(std::list<coords> region);
+
+    bool insideEdges(int x, int y);
+    bool onEdgeOfSurface(int x, int y);
+    bool connectedWithBorder(std::list<coords> region);
+
+    void debugOutput();
 
 private:
     std::vector<uint> vertexArray;
