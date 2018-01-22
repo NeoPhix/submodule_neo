@@ -50,7 +50,7 @@ void processDataFromFile(const char *filename)
     else
     {
         std::cout << "cannot open input data file" << std::endl;
-        return 2;
+        return;
     }
 
     file.close();
