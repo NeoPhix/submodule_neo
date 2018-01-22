@@ -1,6 +1,7 @@
 #ifndef TEST_H
 #define TEST_H
 
-bool test();
+bool testAll(const char *filepath);
+bool test(const char *filepath);
 
 #endif // TEST_H

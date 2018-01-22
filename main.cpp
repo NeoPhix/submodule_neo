@@ -8,15 +8,28 @@
 #include "depthfiller.h"
 #include "test.h"
 
+void processDataFromFile(const char *filename);
+
 int main(int argc, char *argv[])
 {
-    if (argc != 2)
+    switch (argc)
     {
-        std::cout << "need input data file" << std::endl;
+    case 1:
+        std::cout << "no input data" << std::endl;
         return 1;
+    case 3:
+        testAll(argv[2]);
+        break;
     }
 
-    std::ifstream file(argv[1], std::ios_base::in);
+    processDataFromFile(argv[1]);
+
+    return 0;
+}
+
+void processDataFromFile(const char *filename)
+{
+    std::ifstream file(filename, std::ios_base::in);
 
     size_t width = 0;
     size_t height = 0;
@@ -66,13 +79,7 @@ int main(int argc, char *argv[])
         }
         std::cout << std::endl;
     }
-
-   // test();
-
-    return 0;
 }
-
-
 
 
 
